@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include <curl/curl.h>
 
@@ -85,6 +86,15 @@ void Session::SetBearer(const Bearer& token) {
 #endif
 
 Session::Session() : curl_(new CurlHolder()) {
+    initialize();
+}
+
+Session::Session(std::shared_ptr<CurlHolder> curl_holder) : curl_(curl_holder) {
+    curl_easy_reset(curl_->handle);
+    initialize();
+}
+
+void Session::initialize() {
     // Set up some sensible defaults
     curl_version_info_data* version_info = curl_version_info(CURLVERSION_NOW);
     const std::string version = "curl/" + std::string{version_info->version};

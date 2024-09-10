@@ -41,4 +41,8 @@ std::vector<CertInfo> Response::GetCertInfos() {
     }
     return cert_infos;
 }
+
+std::shared_ptr<CurlHolder> Response::GetCurlHolder() {
+    return curl_;
+}
 } // namespace cpr

@@ -51,12 +51,14 @@ class MultiPerform;
 class Session : public std::enable_shared_from_this<Session> {
   public:
     Session();
+    Session(std::shared_ptr<CurlHolder> curl_holder);
+
     Session(const Session& other) = delete;
-    Session(Session&& old) = default;
+    Session(Session&& old) = delete;
 
     ~Session() = default;
 
-    Session& operator=(Session&& old) noexcept = default;
+    Session& operator=(Session&& old) noexcept = delete;
     Session& operator=(const Session& other) = delete;
 
     void SetUrl(const Url& url);
@@ -257,6 +259,7 @@ class Session : public std::enable_shared_from_this<Session> {
     bool isUsedInMultiPerform{false};
     bool isCancellable{false};
 
+    void initialize();
     Response makeDownloadRequest();
     Response makeRequest();
     Response proceed();
